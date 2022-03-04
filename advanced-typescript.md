@@ -97,6 +97,7 @@ let randomObject = getRandomElement<Profile>(profiles)
 ```
 
 This example explicitly passes the array type that the function uses with the `<>` syntaxis.
+
 In practice, the compiler will use type inference based on the argument, meaning that Typescript will guess the type of the generic based on the information from the argument passed to the function.
 
 You can also use multiple generic parameters with **generics** by using different letters/names to denote each type.
@@ -235,9 +236,10 @@ Then you can use this in another function and just `switch` over the state of th
 Another common use case of an **union type** is found in the DOM itself. DOM events always happen independently of each other. So there is a finite list of possible events that can be processed:
 
 "`Typescript
-type Event = MouseEvent | KeyboardEvent; /* and so on */
-```
 
+type Event = MouseEvent | KeyboardEvent; /* and so on */
+
+```other
 One particular case of union type is **discriminated unions** (or tagged union). This specific case allows you to easily differentiate between the types with it.
 
 Why would you want this? Because a union type can also host different types and sometimes you will want to know what type is in use, you can always use type guards for this purpose, but there is a shortcut: **discriminated unions.**
@@ -305,7 +307,8 @@ Union types are an ergonomic way to model a finite number of mutually exclusive 
 
 ## Intersection types
 
-**Intersection** types can be considered the opposite of the previous **union** type. 
+**Intersection** types can be considered the opposite of the previous **union** type.
+
 These types create a new type by **combining**  multiple existing types. The new type will have all the properties and features of the existing ones.
 
 ```typescript
@@ -495,6 +498,7 @@ const affiliates = filterUsers(products, "affiliate") //Result will be { type: "
 ```
 
 This seems a bit more complex so let's dissect it.
+
 The function accepts two generics and uses a type predicate inside the filter function, allowing you to instruct Typescript about the specific type of the argument passed to the function when the function returns `true`.
 
 The type that the filter function will narrow is `Extract<T, Record<"type", U>>` where `T` will be the `Users` array and `Record<"type", U>` will be an object like `{type: 'affiliate' }`
@@ -503,7 +507,7 @@ So the end result of the filter will be `{type: 'affiliate', program: string}`
 
 ### Exclude
 
-This type works opposite to **Extract** by excluding properties already present in two different types. It excludes from `Tall fields that are assignable to `U` .
+This type works opposite to **Extract** by excluding properties already present in two different types. It excludes from `Tall fields that are assignable to` U` .
 
 ```typescript
 interface UserBase {
@@ -635,6 +639,7 @@ This example combines several features of Typescript, it uses:
 - Index signatures: Allow you to access a property even if you don't know the name of it by using the `[]` syntax (like you usually do with dynamically accessing an object property in javascript)
 - The **keyof** operator: This operator returns a union of the keys of the type passed to it. In this case, the use of `keyof Configuration` resolves to `"layout" | "withdraw" | "deposit"....`
 - Capitalize An utility type that transforms a string into the capitalized version of it. In this case, it changes the `Property` name: `layout` → `Layout`.
+
 Finally, it uses [template literal types](https://www.typescriptlang.org/docs/handbook/2/template-literal-types.html) to create the name of the new property. This is a feature name as [key remapping](https://www.typescriptlang.org/docs/handbook/2/mapped-types.html#key-remapping-via-as)
 
 ### Template Literal Types
@@ -653,7 +658,40 @@ type AllLocaleIDs = `${MessagesID | AccountStrID}_id`;
 
 But the real power of this type comes when you need to define a new string type by deriving its value from the information inside the type.
 
-For example:
+Let's use template literals to extract and manipulate a string literal type to, in turn, use them as properties, let's start by splitting a string to an object.
+
+Imagine that you want to check if a semver string is in the correct format. You know the semver pattern is like `Major.Minor.Patch` so, let's build a type to check that pattern and at same time split that into an object for type checking and autocompletion.
+
+```typescript
+const version = "4.1.2"
+type Version = typeof version
+
+// We can create a type to extract the components of that string.
+// We'll split across two '.' characters.
+
+// First lest's extract the components of the string, we know that semver pattern 
+// is like Mayor.Minor.Patch 
+// this also use a conditional type that is explained below
+// you can read it as `if Semver looks like this pattern then split into an object else error
+
+type ExtractSemver<Semver extends string> =
+    Semver extends `${infer Major}.${infer Minor}.${infer Patch}` ?
+    { major: Major, minor: Minor, patch: Patch } : 
+    { error: "Cannot parse semver string" }
+
+
+type RequiredVersion = ExtractSemver<Version>
+
+
+type SemverError = ExtractSemver<"Four point Zero point Five"> // The value opf `SemverError` is "Cannot parse semver string"
+```
+
+[Demo for this code](https://www.typescriptlang.org/play?#code/MYewdgzgLgBAbgUwE4QJbhgXhgIgCwB0AjAQEw4CwAUFAJ4AOCMAasmhtnYyAGbxvow1agHoRMAOpNgAQzAxgSBDKhMZMLkyggYCAB5QkM4LCgALaSAC29cAjBQIMXhrMqY0JKjABzAqPEpAHIAGxCPehDUWGMkEAgnKAB3HSCCIIU3IxM2fyoAmAAxVBRYEIRoIKd9Q2NTCwVrWzB7R2c+cyZPbx8AGhgkpgBrMBAk13cIBCtEJBh6FVUkeQLUJyihpgBZGVoQJAIt732CAAUVYDMYAvM1mBkQiB0AVyn7xrAAE2jBB40GLRuWB3fSRGTeBCfGAAIwQITGBT2zwUchgShkUOi9ycAANUHwAMrTWYweEgIbrVCbVx3BZQJbyTryCCRLHebT3eQgaEAKwQJl0jyYyDiSGENABMAAogZslAiTNkAAeBUkmr2T5Obq+AB8WGoMENMFVyF0Bg1uIAJABvbw8U07Hn7AC+BBtdodxyQrvdYHtc3OUEuzpxMAA-AajdaYFYZE6kAAuGCO-b9KxepNHUZIfp0y5JwOXGDOmBJyOG6Mi-ZJnAAYTko1gCxQXWJpu1PhwxfF1E0MAASggAI7PEqQ1goQRYaWyuompBKifsMA6nsSxjGttIKVIUXTmW1EzzpU4QogZ5zWzsmAALWQOivDiKqEQOD1YhgABUGnAHs8mCA9B8Di847qKoZ3HWDYgE2Mgth4W4eIYPSUFQQA)
+
+First step is to get the string `version` into a type by using `typeof`. Then create a type to hold the extracted semver pattern.
+First step is to restrict the generic `Semver` to be an string, then at the right side a conditional type is defined (explained below) that check if the pattern match, if so, then the pattern is split into an object. If the condition fails, then an error is stored.
+
+There are many other powerful applications of this features, for example:
 
 - A JSON parser with type safety
 
@@ -665,6 +703,40 @@ For example:
 
 - A CSS Parser that you can toy around [in the typescript playground.](https://www.typescriptlang.org/play?#code/C4TwDgpgBAKgTgSwLYHUAWDgQMpgIYDGEAPNsHFBAB5YB2AJgM5SPkK0DmAfFALxQAoKCzadKNCA2Zk4QqAH4oAIgCicOAHs4SuQC4oM8XSZQABlAAkAb3YAzCBRkBfcwB8zAHVrW7Dg+Rc5RXhkdEwcfCJSch49f1kBUEgoAHEIYBhwEkNqY2ZWRE4efjkC9g4jSRMZIOU1TW04nIkpMx9aewoANTwAGwBXCCcwKlNa2n6kACM-OLLOAG4BRKyoAAU8OEYIAGFsbDXNMEZSStb57j5BYWwzk1N2zvWjp11Hvx6BoYX3igAlCCsQLCYSKKxyEFQADaAGsoOxYIhUBgsLhCCRDhowFwALr6NIZLLEELI8JoqKfQZcLgQqBOKAAMnWm22ewORxOANYNMh+n6tBhtA0AHdaMsVskCVzgGziNK7vlRJcSsISWFUZESNKeLkqswHjYOn4dhpaHRgE4nL8oH9pS5rgobfK4tKlhLoBsthBpbL5brzkrinI1SiIui5YDgDqWvdrSazZILVbDU9bZHgY7Paz9pjjsR4+aeVB9Bc3UkPSzdvtTv6TBcg8ILgqDLVVOotDphPoQ2TNaRo3k2injb08IxGAA5PBIIZQKzWu3mWrgyGw+G0RGhUPkkg7Ufjqcz3H6LPeyO+yNF+nuU+yqXn6vanglpVl1ZszKQZj8W-VsbCKYNHoEA5wdYQkDwKgAFphQQehgDQfQACYAAYRiWSEpkIGEOE0fl6CgggNF6LR9F6BAODQYApi+DC6WWYQADo0AARjnWkiJIuB9GFUM6KcBioAAYjAdjIVsU1gCg2xpwQXoQH0AA3Bx6DwWg8Do4QJLNKDGAQAAvCBkLQqh+IEUwaWWIjaFYKA+l6P4KKo-QPyyb8xKgQDgP0KxlCwggcLwhhCOIjt9CUOAIHoJQABplAg6DYPgtAlH0FiUJQukYrkJQRNS0ClG0qSZKQOSQHypRlLgVT1Ni5Qit0gyIHy9Kspy5iWPy3zONI5RePCJQ2oEgRrNs2Del6epetcr8rl8gB6ebnixBxQCgAByJQEpguCEKUdb4WYUrx3Kdc5C8hSCv8wKNHwkKuIqyLora4RcrALr6sk6TZPkiqqpqvA6sKr69MMlrMqcbLXo6j6eu4vrQ0GyGBCcIA)
 - And many more that you can find in this [awesome repository.](https://github.com/ghoullier/awesome-template-literal-types)
+
+There is also a few collection of utilities that help you to create even more complex types, one of them is [ts-toolbelt](https://millsp.github.io/ts-toolbelt/) that provides hundreds of utilities. [Here you can find](https://twitter.com/mpocock1/status/1499002040168636420) a very cool use of the utilities of ts-toolbelt and string manipulation. (video by Matt Pocock)
+
+One of the utilities used in that video and provided by ts-toolbelt is `Split`. Yes, you can construct a type that let's you split a string literal and transform that into a list of string literals to then use it as type.
+Let's see how to build a simplified version of it
+
+```typescript
+// It will accept two arguments, the string to split `S` and a delimitator `D`
+type Split<S extends string, D extends string> =
+    string extends S ? string[] :
+    S extends '' ? [] :
+    S extends `${infer T}${D}${infer U}` ? [T, ...Split<U, D>] : [S];
+
+
+type S1 = Split<string, ".">
+
+
+type S2 = Split<"", "."> //[]
+
+
+type S3 = Split<"1.2", "."> //["1","2"]
+
+type S4 = Split<"1.2.3", "."> //["1","2","3"]
+
+type Major = S4[0] //"1"
+```
+
+This version of `Split` works only with single characters delimitators.
+
+First, it declares that the type will accept two "arguments", type `S` as the string to be splitted and type `D` as the delimitator, both should be strings.
+
+Then, in the second line, it use a conditional type (explained below) that checks if the string is an string literal, if so it returns an string array.
+
+Next line check if this string array is empty, if so, it returns an empty tuple, otherwise, in a similar way to the `ExtractSemver` example it checks if the string `S` matches the pattern and extract the pieces to then recursively re-run the `Split`. If the string don't match, meaning the delimitator is not present, then it just return the `S.`
 
 ### Conditional Types
 
@@ -710,15 +782,17 @@ This type selects the `never` branch if the type `T` is assignable to either `nu
 Let's check another example use case for conditional type. Imagine that you want a way to figure it out if a string is trimmed, meaning it doesn't have empty spaces at the end of the beginning. How can that be done?
 
 Now let's see how to implement this type. Let's check if the passed string has empty spaces at the end. You'll need a way to say:
+
 "Check if the string contains an at the end. This can be done by using the keyword `infer`
 
-"`Typescript
-T extends `${infer R} `
+```typescript
+T extends `${infer R}`
 ```
 
 The `infer` keyword is a compliment to conditional types. It cannot be used outside of an `extends` clause. `infer` allows you to define a variable within the constraint to be used or referenced later.
 
 So in the previous code snippet, the type `infer R`  is extracting the type of the `T` generic and, since it is inside of a template literal, is constructing a new string with an empty space at the right side.
+
 It can be read as "Is T the string with empty space at the right"?
 
 With that, let's create the type `TrimEnd.`
@@ -780,3 +854,4 @@ collectPassword(" invalid password ") // This triggers an error
 This type uses a combination of powerful typescript features: Template Literal Types and Conditional Types. You can mix and match as many Typescript features as you need and want to create your own utilities and complex types.
 
 Typescript is a fully-fledged language that is not just to add some types into the loosy Javascript but can help you model complex data requirements and avoid various kinds of bugs.
+
