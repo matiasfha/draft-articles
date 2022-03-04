@@ -1,5 +1,7 @@
 # Advanced Typescript for your project
 
+# Advanced Typescript for your project
+
 > Note: Need a better title since this is more like "intermediate" TS to get you started with complex data types
 
 You may already know that Typescript can be a significant improvement for your Javascript developer team, but, like any new language, there is a learning curve to harness its full power of it.
@@ -235,11 +237,10 @@ Then you can use this in another function and just `switch` over the state of th
 
 Another common use case of an **union type** is found in the DOM itself. DOM events always happen independently of each other. So there is a finite list of possible events that can be processed:
 
-"`Typescript
-
+```typescript
 type Event = MouseEvent | KeyboardEvent; /* and so on */
+```
 
-```other
 One particular case of union type is **discriminated unions** (or tagged union). This specific case allows you to easily differentiate between the types with it.
 
 Why would you want this? Because a union type can also host different types and sometimes you will want to know what type is in use, you can always use type guards for this purpose, but there is a shortcut: **discriminated unions.**
@@ -250,7 +251,7 @@ One everyday use case for this type of union is to check that one piece of the d
 
 To model this, you need to combine different types to define each case and use optional attributes along with the `never` type like this:
 
-"`Typescript
+```typescript
 type WithUsername = {
     username: string;
     email?: never
@@ -729,6 +730,8 @@ type S4 = Split<"1.2.3", "."> //["1","2","3"]
 
 type Major = S4[0] //"1"
 ```
+
+[Check the Demo](https://www.typescriptlang.org/play?#code/PTAEEkBdQdwSwDYNAQwMZoKYAdqRgPaoBOA5gK4C2mAdpAM4A0okAFpqPZMXDaS0XrYEcaAAMAymNQ0AJqlCzMIyqJSQCxUGIAiYgFCQAntg4ThogDwTQmAB6Ras+p269SzHbYdOXXHnwAfKAAvPqgEa4B-PaOci42APxR7gDaALqgAFzhkTaxvqAA5EWgyRnZuRH5PvHaACQA3rwAZphaACoAvk06Pc00bVoAql3S5R3MAHQz5iKQlsOegZlZoKkS6QDc+rvGpqASAIyhhxYL-u7MAERT14G7hiZmAEync1bX1zd3wSAZj32ZgAzO9zpZrkcpi9vqBbvdQP9Id9rjD0ntnocACxg+YQqEvKbA2Hwv7AVLIxiolHE9FPA4AWRQACtNO8sakAAyZEDIoA)
 
 This version of `Split` works only with single characters delimitators.
 
