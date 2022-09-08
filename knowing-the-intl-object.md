@@ -14,28 +14,28 @@ keywords:
 summary: A medida tu aplicación crece es posible quieras mostrar tu contenido en diferentes formatos e incluso diferentes idiomas. Javascript ofrece una API orientada a este objetivo, el objeto **Intl**.
 ---
 # Knowing the **Intl** Javascript API
-Personalizing the user experience is becoming more important every day, even more so if your application or content is consumed by users in different parts of the world who most likely use different languages ​​or date formats, currency, etc.
+Personalizing the user experience is becoming more critical every day, even more so if your application or content is consumed by users in different parts of the world who most likely use other languages ​​, date formats, currency, etc.
 
-There are multiple solutions to make your content adapt to the location or language of your users, but many of these methods have become outdated or are very complex or dependent on a particular framework.
+There are multiple solutions to make your content adapt to the location or language of your users. Still, many of these methods have become outdated, complex, or dependent on a particular framework.
 
 Javascript also offers an internationalization solution, the **Intl** object.
 
 ## What is Internationalization?
 
 
-The concept of internationalization or i18n is the process of supporting different languages, languages ​​and countries in your application.
+The concept of internationalization, or i18n, is the process of supporting different languages, languages ​​, and countries in your application.
 
 
 
-i18n is commonly confused with Localization or even translation, but i18n refers to the process of developing a product, a process focused on supporting different languages ​​and formats based on locality. A common code base.
+i18n is commonly confused with Localization or even translation, but i18n refers to developing a product, a process focused on supporting different languages ​​and formats based on locality—a common code base.
 
 Providing internationalization support is critical for many products but often overlooked.
 
-> Localization refers to the generation of a specific product to target a market or region, including translation of content and even modification of the interface and terminology.
+> Localization refers to the generation of a specific product to target a market or region, including translating content and even modifying the interface and terminology.
 
 Typically i18n implementation may include:
 
-- Develop software that is independent of specific language or cultural conventions. (eg: display of times and dates).
+- Develop software that is independent of a specific language or cultural convention. (e.g., display of times and dates).
 - Use of localization frameworks.
 - Removal of "hard-coded" text in the code.
 - Support for bi-directional languages.
@@ -43,11 +43,11 @@ Typically i18n implementation may include:
 
 ## The **Intl** object
 
-According to [MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/**Intl**), _"The **Intl** object is the namespace for the ECMAScript Internationalization API, which provides language sensitive string comparison, number formatting, and date and time formatting. The **Intl** object provides access to several constructors as well as functionality common to the internationalization constructors and other language sensitive functions."_
+According to [MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/**Intl**), _"The **Intl** object is the namespace for the ECMAScript Internationalization API, which provides language sensitive string comparison, number formatting, and the date and time formatting. The **Intl** object provides access to several constructors and functionality common to the internationalization constructors and other language sensitive functions."_
 
-In other words, through the global **Intl** object you can access a set of tools aimed at working with content that is sensitive to the user's language.
+In other words, through the global **Intl** object, you can access a set of tools to work with content sensitive to the user's language.
 
-These methods are currently well supported by most browsers based on information available at [caniuse.com](https://caniuse.com/?search=Internationalization%20API)
+Most browsers currently well support these methods based on information available at [caniuse.com](https://caniuse.com/?search=Internationalization%20API)
 
 ![Can I Use: **Intl**](https://res.cloudinary.com/matiasfha/image/upload/v1662665832/Screen_Shot_2022-09-07_at_16.45.50_anek8r.png)
 
@@ -81,31 +81,31 @@ dateFormatter("es-ES");
 
 <small>You can see a demo of this code in [the following link](https://jsitor.com/BtkNjWJNw)</small>
 
-In this code you can briefly see some of the things that **Intl** can do.
+In this code, you can briefly see some things that **Intl** can do.
 
-- Gives you static access to different constructors, in this case `DateTimeFormat` and `NumberFormat`
+- Gives you static access to different constructors, in this case, `DateTimeFormat` and `NumberFormat`
 - Allows you to "transform" content from one format to another based on the value of `locale`
 
-It is important to note the `locale` argument received by all constructors exposed by **Intl**. This is the value that you will ideally capture dynamically so that you can modify the content based on its value.
+It is essential to note the `locale` argument received by all constructors exposed by **Intl**. This `locale` is the value you will ideally capture dynamically so you can modify the content based on its value.
 
 
-Browsers offer a method of getting the value of `locale` based on the user's preferences or the user's location.
+Browsers offer a method of getting the value of `locale` based on the user's preferences or location.
 
 ```js
 const locale = navigator.language
 console.log(locale); // "es-CL"
 ```
 
-## What is `locale` and how does it work?
+## What is `locale`, and how does it work?
 
 When we refer to `locale` we refer to a string that represents a group of user preferences like:
 
 - Date and Time
 - numbers and currency
-- Time zones, languages ​​and countries
+- Time zones, languages ​​, and countries
 - Measurement units
 
-This `locale` string must follow a particular format to be used, this consists of:
+This `locale` string must follow a particular format to be used; this consists of:
 
 * A subtag or language code.
 * (optional) a region or country subtag.
@@ -115,7 +115,7 @@ This `locale` string must follow a particular format to be used, this consists o
 
 ![locale example](https://res.cloudinary.com/matiasfha/image/upload/v1662665973/Screen_Shot_2022-09-08_at_15.39.23_mvtmlf.png)
 
-Each subtag or sequence used to create the `locale` string is separated by a hyphen. Also, identifiers identify case.
+Each subtag or sequence used to create the `locale` string is separated by a hyphen. Also, identifiers identify the case.
 
 Some examples of `locale` strings
 * "es": Spanish (language)
@@ -123,30 +123,30 @@ Some examples of `locale` strings
 * "zh-Hans-CN": Simplified Chinese (language) (script) as used in China (region).
 
 
-When a `locale` string is passed as an argument to one of **Intl**'s provided constructors it is compared to a list of available `locales` for the best fit. This process is done using one of two possible algorithms: `lookup` or `best-fit`.
+When a `locale` string is passed as an argument to one of **Intl**'s provided constructors, it is compared to a list of available `locales` for the best fit. This process is done using one of two possible algorithms: `lookup` or `best-fit`.
 
-The `lookup` algorithm checks if the runtime environment has the `locale` used by searching from the most specific to the least specific result. If the exact value of `locale` is not available, it will return the closest one, for example if you search for `de-DE-u-co-phonebk` if not found, you can return `de-DE` and in case of not finding `de` reference will return a default value.
+The `lookup` algorithm checks if the runtime environment has the `locale` used by searching from the most specific to the least detailed result. If the exact value of `locale` is unavailable, it will return the closest one. For example, if you search for `de-DE-u-co-phonebk` if not found, you can return `de-DE`, and in case of not seeing `de` reference will return a default value.
 
-The `best-fit` algorithm is an improvement of the previous algorithm where a default value is not returned if the search is not found, if not, the one that best "fits" is returned. IF `es-CL` is searched for but not found, `es-AR` will be returned instead of sjust `is`.
+The `best-fit` algorithm is an improvement of the previous algorithm where a default value is not returned if the search is not found. If not, the one that best "fits" is returned. IF `es-CL` is searched for but not found, `es-AR` will be returned instead of just `es`.
 
 You can learn more about this process by [reviewing the documentation on MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/**Intl**#locale_identification_and_negotiation).
 
 
 #### What does each subtag of the string mean?
 
-As described above, the string locale is made up of different parts separated by a hyphen, the first section being the language identifier, what are the rest used for?
+As described above, the string locale is made up of different parts separated by a hyphen, the first section being the language identifier. What are the rest used for?
 
 ##### Script code
 
-This code is used to identify in what "format" a certain language is written, for example in Asian languages ​​`Hans` means that Simplified Chinese will be used vs `Hant` which indicates that Traditional Chinese will be used.
+This code is used to identify in what "format" a particular language is written. For example, in Asian languages ​​`Hans` means that Simplified Chinese will be used vs. `Hant`, which indicates that Traditional Chinese will be used.
 
 ##### Variant code
 
-These represent the different dialect options for a certain language.
+These represent the different dialect options for a specific language.
 
 ##### Extensions
 
-It includes identifiers for different calendars, numeric or ordering systems, in the example of the previous image `phonebk` identifies the variant indicating the ordering used for the letters, in this case phone book style.
+It includes identifiers for different calendars, and numeric or ordering systems. In the example of the previous image, `phonebk` identifies the variant indicating the ordering used for the letters, in this case phone book style.
 
 ## Time to code
 
@@ -154,7 +154,7 @@ It includes identifiers for different calendars, numeric or ordering systems, in
 
 Let's start by formatting dates and times based on different values ​​of `locale`.
 
-For this you need access to the `DateTimeFormat` constructor.
+For this, you need access to the `DateTimeFormat` constructor.
 ```js
 const date = new Date(); //la fecha de hoy
 
@@ -201,13 +201,11 @@ type Options = {
 }
 ```
 
-That is, you have many options to define the best way to display a date and time in your application.
+You have many options to define the best way to display a date and time in your application.
 
-Let's review some examples
+Let's review some examples.
 
 ```js
-// Utilizando las opciones
-
 const options = {
   year: "2-digit",
   month: "long",
@@ -238,9 +236,9 @@ const arDate2 = new Intl.DateTimeFormat('ar-eg', options).format(date)
 
 ### Formatting Numbers
 
-Another constructor offered by **Intl** is `NumberFormat`, you can use this constructor to change the way numbers are represented in the screen.
+Another constructor offered by **Intl** is `NumberFormat`. You can use this constructor to change the way numbers are represented on the screen.
 
-The only difference between `DateTimeFormat` and `NumberFormat` constructors is the set of options that this contructors receives.
+The only difference between `DateTimeFormat` and `NumberFormat` constructors is the set of options that these contructors receives.
 
 ```ts
 type Options = {
@@ -266,9 +264,9 @@ type Options = {
     maximumSignificantDigits?: number;
 }
 ```
-Using this big list of options you can format a number to probably every possible use case.
+Using this extensive list of options, you can format a number to probably every possible use case.
 
-Check this quick example
+Check this quick example.
 
 ```js
 function currencyFormatter({ currency, value}) {
@@ -303,16 +301,16 @@ const dinar = currencyFormatter({
 }) // DZD 123,456.00
 ```
 
-In this example you can see the following
+In this code snippet, you can see the following
 - A function was created to hold the formatter.
 - The formatter is always using the `en-US` locale.
-- There are 3 options defining what style of number formatting will be using `style: currency`.
+- Three options define what style of number formatting will use `style: currency`.
 
-Even that we kept the same locale the values returned by the formating function are different.
+Even though we kept the same locale, the values returned by the formatting function are different.
 
-> What would happen if you also change the locale for each currency conversion?
+> What would happen if you also changed the locale for each currency conversion?
 
-In case this options don't cover your use case you can use another method that is provided by the formatter: `formatToParts`. This method will return an array of objects that represent the number as string in parts so you can use them to customize and solve your particular situation.
+In case these options don't cover your use case, you can use another method that is provided by the formatter: `formatToParts`. This method will return an array of objects representing the number as a string in parts so you can use them to customize and solve your particular situation.
 
 ```js
 const formatToParts = new Intl.NumberFormat('en-US', {
@@ -332,9 +330,9 @@ const formatToParts = new Intl.NumberFormat('en-US', {
 ```
 
 
-What if you want to show a nunber like the social networks? like `1.2K`?
+What if you want to show a number like the social networks? Like `1.2K`?
 
-The `NumberFormat` can solve that in a very simple way.
+The `NumberFormat` can straightforwardly solve that.
 
 ```js
 // Compact format 
@@ -354,7 +352,7 @@ const res4 = formatCompact(123456)  // 123K
 const res5 = formatCompact(1234567) // 1.2M
 ```
 
-In this case the solution involves the use of the `notation` option 
+In this case, the solution involves the use of the `notation` option. 
 
 You can find a demo for the number formatting [in this playground.](https://jsitor.com/YX91hj0gX)
 
