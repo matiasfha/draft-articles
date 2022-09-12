@@ -1,15 +1,15 @@
 ---
 keywords: 
-- **Intl**
-- **Intl** Javascript
+- Intl
+- Intl Javascript
 - Internationalization
 - Javascript Internationalization
 - JS Internationalization
 - i18n
 - Javascript i18n
 - JS i18n
-- **Intl** Date formatting
-- **Intl** currency
+- Intl Date formatting
+- Intl currency
 - Pluralization
 summary: A medida tu aplicación crece es posible quieras mostrar tu contenido en diferentes formatos e incluso diferentes idiomas. Javascript ofrece una API orientada a este objetivo, el objeto **Intl**.
 ---
@@ -356,3 +356,56 @@ In this case, the solution involves the use of the `notation` option.
 
 You can find a demo for the number formatting [in this playground.](https://jsitor.com/YX91hj0gX)
 
+### Relative Time
+
+Some times, you want to display the dates in a relative form, how so?, like this: `2 weeks ago`. You can do this by doing some math and string concatenation with the dates, but *Intl* helps you with this.
+
+*Intl* expose a constructor named *RelativeTimeFormat* that, same as before accepts an argument to tell it what language you want to use and a set of options
+
+```ts
+type Options = {
+    localeMatches: 'best fit' | 'lookup',
+    numeric: 'always' |'auto'  // The format of the output
+    style: 'long' | 'short' | 'narrow'
+}
+```
+
+For this constructor the `format` method accepts a numeric value (*NOT A DATE*) like this
+
+```js
+const formatter = new Intl.RelativeTimeFormat('en-US');
+const monthAgo = formatter.format(-1, 'month') // 1 month ago
+const futureMonth = formatter.format(1, 'month') // in 1 month
+```
+
+When would you use something like this?. Imagin a list of articles, each article have a publication date, but you don't want to show just that, you want to show how much relative time is between the publication date and today (the day the user is reading the list). 
+
+To accomplish this you'll need to do a little math to get the difference between the two dates and use that result as a relative time value.
+
+```js
+const publicationDate = new Date('2022/01/05')
+
+const currentDate = new Date()
+
+const msPerDay = 1000 * 60 * 60 * 24;
+
+const diffTime = Math.abs(currentDate - publicationDate);
+const diffDays = Math.ceil(diffTime / msPerDay);
+
+
+const enRtf = new Intl.RelativeTimeFormat("en-US", {
+  numeric: 'auto',
+});
+
+console.log(enRtf.format(-diffDays, "day")); // 251 days ago
+console.log(enRtf.format(-diffDays/30, "month")); //8.367 months ago
+
+
+const esRtf = new Intl.RelativeTimeFormat("es-ES", {
+  numeric: 'auto',
+});
+
+console.log(esRtf.format(-diffDays, "day")); // hace 251 días
+console.log(esRtf.format(-diffDays / 30, "month")); // hace 8.367 meses
+```
+<small> Check the demo playground [in this link](https://jsitor.com/P9XZ1ET9L)</small>
