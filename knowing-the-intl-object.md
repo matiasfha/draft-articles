@@ -378,7 +378,7 @@ const monthAgo = formatter.format(-1, 'month') // 1 month ago
 const futureMonth = formatter.format(1, 'month') // in 1 month
 ```
 
-When would you use something like this?. Imagin a list of articles, each article have a publication date, but you don't want to show just that, you want to show how much relative time is between the publication date and today (the day the user is reading the list). 
+When would you use something like this?. Imagine a list of articles, each article have a publication date, but you don't want to show just that, you want to show how much relative time is between the publication date and today (the day the user is reading the list). 
 
 To accomplish this you'll need to do a little math to get the difference between the two dates and use that result as a relative time value.
 
@@ -409,3 +409,193 @@ console.log(esRtf.format(-diffDays, "day")); // hace 251 días
 console.log(esRtf.format(-diffDays / 30, "month")); // hace 8.367 meses
 ```
 <small> Check the demo playground [in this link](https://jsitor.com/P9XZ1ET9L)</small>
+
+
+### Pluralization
+
+The *Intl* object also support a way to define how to format plural-sensistive content, this is the *PluralRules* constructor.
+
+One use case for this feature is to show the number of items of in existanse in your collection, ideally this should respect the grammatical numbering in each language you choose to use.
+
+You can always get around this requirement by writing your copy avoiding the need of pluralization, but what happen is you need it?.
+
+Let's check an example
+
+```js
+function pluralize(locale, count, singular, plural) {
+    const pluralRules = new Intl.PluralRules(locale);
+    const numbering = pluralRules.select(count);
+    switch (numbering) {
+        case 'one':
+        return count + ' ' + singular;
+        case 'other':
+        return count + ' ' + plural;
+        default:
+        throw new Error('Unknown: '+ numberig);
+    }
+}
+
+function showItemsQuantity(count) {
+    return pluralize('en-US', count, 'item', 'items')
+}
+
+const zeroItem = showItemsQuantity(0) // 0 items
+const oneItem = showItemsQuantity(1) // 1 item
+const manyItem = showItemsQuantity(12) // 12 items
+
+// Spanish
+function mostrarCantidadCajas(count) {
+    return pluralize('es-ES', count, 'caja', 'cajas')
+}
+const ceroItem = mostrarCantidadCajas(0) // 0 cajas
+const unoItem = mostrarCantidadCajas(1) // 1 caja
+const muchosItem = mostrarCantidadCajas(12) // 12 cajas
+
+```
+<small>Check the demo [in the playground](https://jsitor.com/exTjrc0s_V)</small>
+> Note: in a real-woprld sceneario, you wouldn't hardcode the plurals 
+> like in this snippet; they'd be part of your translation files
+
+Maybe this example is too naive, since English and Spanish have just two pluralization rules; however, not every language follow this rule, some have only a single plural form, while other have multiple forms. 
+
+> This example has been borrowed from [v8 blog](https://v8.dev/features/intl-pluralrules)
+
+```js
+const suffixes = new Map([
+  ['zero',  'cathod'],
+  ['one',   'gath'],
+  // Note: the `two` form happens to be the same as the `'one'`
+  // form for this word specifically, but that is not true for
+  // all words in Welsh.
+  ['two',   'gath'],
+  ['few',   'cath'],
+  ['many',  'chath'],
+  ['other', 'cath'],
+]);
+const pr = new Intl.PluralRules('cy');
+const formatWelshCats = (n) => {
+  const rule = pr.select(n);
+  const suffix = suffixes.get(rule);
+  return `${n} ${suffix}`;
+};
+
+formatWelshCats(0);   // '0 cathod'
+formatWelshCats(1);   // '1 gath'
+formatWelshCats(1.5); // '1.5 cath'
+formatWelshCats(2);   // '2 gath'
+formatWelshCats(3);   // '3 cath'
+formatWelshCats(6);   // '6 chath'
+formatWelshCats(42);  // '42 cath'
+```
+
+This constructor as the other ones exposed by *Intl* accepts a second argument to define options, one of that options is the `type` that allows you to define the selection rule. By default it use the `cardinal` way. If you want to get the `ordinal` indicator for a number (for example to create a list ) you can do it like the following snippet
+
+```js
+const pr = new Intl.PluralRules('en-US',{
+    type: 'ordinal'
+})
+const suffixes = {
+    one: 'st',
+    two: 'nd',
+    few: 'rd',
+    other: 'th'
+}
+
+const formatOrdinals = n => `${n}${suffixes[pr.select(n)]}`
+formatOrdinals(0) // 0th
+formatOrdinals(1) //1sst
+formatOrdinals(2) // //2nd
+formatOrdinals(40) //40th
+formatOrdinals(63) // 63rd
+formatOrdinals(100) // 100nd
+```
+
+
+### List Formatting
+
+Displaying list is one of the most used way to showcase information in a webapp. But since your users speaks different language you need a way to format the list based on that language convention. 
+
+To avoid the hassle of implementing this formatting rules by hand - that could be really hard - *Intl* offers the *ListFormat* API.
+
+```js
+function getFormatter(locale = 'en-US') {
+  const  lf  = new Intl.ListFormat(locale);
+  return lf
+}
+
+const enLf = getFormatter()
+const zfLf = getFormatter('zh')
+
+enLf.format(['one']);                           // One
+enLf.format(['one', 'two']);                    // One and two
+enLf.format(['one', 'two', 'three']);           // One, two, and three
+enLf.format(['one', 'two', 'three', 'four']);   // One, two, and three
+
+
+zfLf.format(['one']);                           // One
+zfLf.format(['one', 'two']);                    // One和two
+zfLf.format(['one', 'two', 'three']);           // One、two和three
+zfLf.format(['one', 'two', 'three', 'four']);   // One、two、three和four
+```
+
+What this formatter does is basically joining an array of string with the correct conjunction or disjunction to create a meaningful phrase.
+
+The default way to format is by using a conjunction unless you pass the `type` options as `disjuntion`
+
+```js
+const dlf = new Intl.ListFormat('en-US', { type: 'disjunction'})
+dlf.format(['One'])                         // One
+dlf.format(['One', 'two'])                  // One or two
+dlf.format(['One', 'two', 'three'])         // One, two, or three
+dlf.format(['One', 'two', 'three', 'four']) // One, two, three or four
+```
+
+As always, you can check the playground [example in this link.](https://jsitor.com/wTiyKccEh)
+
+### Segmentation
+
+Segmentation refers to the requirement of splitting some text in segments, for example, split a paragraph in words.
+The *Intl.Segmenter* constructor offers a locale-sensitive solution to split the text returning meaningful items for the source string.
+
+The most naive and most often used solution to split a string is just using `String.prototype.split`, for example splitting a text by whitespaces `.split(' ')`. But, what happen if the language does not use whitespace between words? The result of the split action will be wrong, to avoid this let's use the *Segmenter* constructor.
+
+```js
+const str = "吾輩は猫である。名前はたぬき。";
+const segmenterJa = new Intl.Segmenter('ja-JP', { granularity: 'word' });
+
+const segments = segmenterJa.segment(str);
+console.table(Array.from(segments));
+// [{segment: '吾輩', index: 0, input: '吾輩は猫である。名前はたぬき。', isWordLike: true},
+// etc.
+// ]
+```
+<small>Example extracted directly from [MDN documentation](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/Segmenter#basic_usage_and_difference_from_string.prototype.split)</small>
+
+
+### String comparison
+
+The last constructor to review is the *Intl.Collator* one, this constructor enables string comparison with locale sensitivity.
+
+This constructor is very useful to sort strings that contains extra letters like German or Swedish. Different languages have different sorting rules, let's check a quick example of this
+
+```js
+const letters = ['ä', 'z']
+const listDE = new Intl.Collator('de')
+const listSV = new Intl.Collator('sv')
+// in German, ä sorts with a
+console.log(letters.sort(listDE.compare));
+// → a negative value
+
+// in Swedish, ä sorts after z
+console.log(letters.sort(listSV.compare));
+// → a positive value
+```
+<small>Check the code [in the playground](https://jsitor.com/XXRuoOAF1)</small>
+
+
+## Conclusion
+Internationalization is an important piece of a application or website that is meant to be used by a worldwide audience, but get it right is a complex topic. Luckly there are many building blocks directly available from the Javascript engine that can help you implement a locale sensible UI.
+
+
+That’s a wrap!
+If you have any questions or feedback, [open an issue on  my AMA repo](https://github.com/matiasfha/ama/issues/new/choose) or [ping me on Twitter.](https://twitter.com/matiasfha)
