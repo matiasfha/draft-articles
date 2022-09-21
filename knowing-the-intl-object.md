@@ -11,10 +11,10 @@ keywords:
 - Intl Date formatting
 - Intl currency
 - Pluralization
-summary: A medida tu aplicación crece es posible quieras mostrar tu contenido en diferentes formatos e incluso diferentes idiomas. Javascript ofrece una API orientada a este objetivo, el objeto **Intl**.
+summary: As your app grows you may want to display your content in different formats and even different languages. Javascript offers an API for this purpose, the **Intl** object.
 ---
 # Knowing the **Intl** Javascript API
-Personalizing the user experience is becoming more critical every day, even more so if your application or content is consumed by users in different parts of the world who most likely use other languages ​​, date formats, currency, etc.
+Personalizing the user experience is becoming more critical every day, even more so if your application or content is consumed by users in different parts of the world who most likely use other languages, date formats, currency, etc.
 
 There are multiple solutions to make your content adapt to the location or language of your users. Still, many of these methods have become outdated, complex, or dependent on a particular framework.
 
@@ -23,11 +23,9 @@ Javascript also offers an internationalization solution, the **Intl** object.
 ## What is Internationalization?
 
 
-The concept of internationalization, or i18n, is the process of supporting different languages, languages ​​, and countries in your application.
+The concept of internationalization, or i18n, is the process of supporting different languages, and countries in your application.
 
-
-
-i18n is commonly confused with Localization or even translation, but i18n refers to developing a product, a process focused on supporting different languages ​​and formats based on locality—a common code base.
+i18n is commonly confused with Localization or even translation, but i18n refers to developing a product, a process focused on supporting different languages and formats based on locality — a common code base.
 
 Providing internationalization support is critical for many products but often overlooked.
 
@@ -35,11 +33,11 @@ Providing internationalization support is critical for many products but often o
 
 Typically i18n implementation may include:
 
-- Develop software that is independent of a specific language or cultural convention. (e.g., display of times and dates).
-- Use of localization frameworks.
-- Removal of "hard-coded" text in the code.
-- Support for bi-directional languages.
-- Support for different number formats.
+- Development of software that is independent of a specific language or cultural convention. (e.g. display of times and dates)
+- Use of localization frameworks
+- Removal of "hard-coded" text in the code
+- Support for bi-directional languages
+- Support for different number formats
 
 ## The **Intl** object
 
@@ -47,18 +45,18 @@ According to [MDN](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Refer
 
 In other words, through the global **Intl** object, you can access a set of tools to work with content sensitive to the user's language.
 
-Most browsers currently well support these methods based on information available at [caniuse.com](https://caniuse.com/?search=Internationalization%20API)
+Most browsers currently support these methods well based on information available at [caniuse.com](https://caniuse.com/?search=Internationalization%20API)
 
 ![Can I Use: **Intl**](https://res.cloudinary.com/matiasfha/image/upload/v1662665832/Screen_Shot_2022-09-07_at_16.45.50_anek8r.png)
 
-TLDR; A quick example of what this API can achieve
+TLDR; A quick example of what this API can achieve:
 
 ```js 
 const value = 1234.39;
 const today = new Date("2022-09-07");
 
 /**
- * @param local un string que representa un codigo de localización
+ * @param locale is a string that represents a location code
  */
 function dateFormatter(locale) {
   const dateFormatter = new Intl.DateTimeFormat(locale)
@@ -81,13 +79,12 @@ dateFormatter("es-ES");
 
 <small>You can see a demo of this code in [the following link](https://jsitor.com/BtkNjWJNw)</small>
 
-In this code, you can briefly see some things that **Intl** can do.
+In this code, you can briefly see some methods and transformations that **Intl** can do.
 
 - Gives you static access to different constructors, in this case, `DateTimeFormat` and `NumberFormat`
 - Allows you to "transform" content from one format to another based on the value of `locale`
 
-It is essential to note the `locale` argument received by all constructors exposed by **Intl**. This `locale` is the value you will ideally capture dynamically so you can modify the content based on its value.
-
+It is essential to note that the `locale` argument is received by all constructors exposed by **Intl**. This `locale` is the value you will ideally capture dynamically so you can modify content based on its value.
 
 Browsers offer a method of getting the value of `locale` based on the user's preferences or location.
 
@@ -102,16 +99,16 @@ When we refer to `locale` we refer to a string that represents a group of user p
 
 - Date and Time
 - numbers and currency
-- Time zones, languages ​​, and countries
+- Time zones, languages, and countries
 - Measurement units
 
-This `locale` string must follow a particular format to be used; this consists of:
+This `locale` string must follow a particular format to be used, this consists of:
 
-* A subtag or language code.
-* (optional) a region or country subtag.
-* (optional) a subtag script.
-* (optional) one or more variation subtags.
-* (optional) one or more [BCP-47](https://datatracker.ietf.org/doc/html/rfc4647#section-3.4) extension sequences.
+* A subtag or language code
+* (optional) a region or country subtag
+* (optional) a subtag script
+* (optional) one or more variation subtags
+* (optional) one or more [BCP-47](https://datatracker.ietf.org/doc/html/rfc4647#section-3.4) extension sequences
 
 ![locale example](https://res.cloudinary.com/matiasfha/image/upload/v1662665973/Screen_Shot_2022-09-08_at_15.39.23_mvtmlf.png)
 
@@ -119,8 +116,8 @@ Each subtag or sequence used to create the `locale` string is separated by a hyp
 
 Some examples of `locale` strings
 * "es": Spanish (language)
-* "es-CL": Spanish (language) as it is used in Chile (region).
-* "zh-Hans-CN": Simplified Chinese (language) (script) as used in China (region).
+* "es-CL": Spanish (language) as it is used in Chile (region)
+* "zh-Hans-CN": Simplified Chinese (language) (script) as used in China (region)
 
 
 When a `locale` string is passed as an argument to one of **Intl**'s provided constructors, it is compared to a list of available `locales` for the best fit. This process is done using one of two possible algorithms: `lookup` or `best-fit`.
@@ -134,29 +131,31 @@ You can learn more about this process by [reviewing the documentation on MDN](ht
 
 #### What does each subtag of the string mean?
 
-As described above, the string locale is made up of different parts separated by a hyphen, the first section being the language identifier. What are the rest used for?
+As described above, the string locale is made up of different parts separated by a hyphen, the first section being the language identifier. 
+
+What are the rest used for?
 
 ##### Script code
 
-This code is used to identify in what "format" a particular language is written. For example, in Asian languages ​​`Hans` means that Simplified Chinese will be used vs. `Hant`, which indicates that Traditional Chinese will be used.
+This script code is used to identify in what "format" a particular language is written. For example, in Asian languages `Hans` means that Simplified Chinese will be used vs. `Hant`, which indicates that Traditional Chinese will be used.
 
 ##### Variant code
 
-These represent the different dialect options for a specific language.
+Variant codes represent the different dialect options for a specific language.
 
 ##### Extensions
 
-It includes identifiers for different calendars, and numeric or ordering systems. In the example of the previous image, `phonebk` identifies the variant indicating the ordering used for the letters, in this case phone book style.
+Extensions include identifiers for different calendars, and numeric or ordering systems. In the example of the previous image, `phonebk` identifies the variant indicating the ordering used for the letters, in this case phone book style.
 
 ## Time to code
 
 ### Formatting dates and time 
 
-Let's start by formatting dates and times based on different values ​​of `locale`.
+Let's start by formatting dates and times based on different values of `locale`.
 
 For this, you need access to the `DateTimeFormat` constructor.
 ```js
-const date = new Date(); //la fecha de hoy
+const date = new Date(); //Today's date
 
 // Fecha en formato USA
 const usaDate = new Intl.DateTimeFormat('en-US').format(date) // 9/8/2022
@@ -218,18 +217,18 @@ const options = {
   timeZone: 'America/Santiago'
 }
 
-// Fecha en formato USA
+// Date in USA format
 const usaDate2 = new Intl.DateTimeFormat('en-US', options).format(date)
 // Thursday, September 8, 22 at 10:20:54 AM
 
 const clDate2 = new Intl.DateTimeFormat('es-CL', options).format(date)
 // jueves, 8 de septiembre de 22, 10:20:54 a. m.
 
-// Fecha en formato Aleman
+// Date in German format
 const deDate2 = new Intl.DateTimeFormat('de', options).format(date)
 //Donnerstag, 8. September 22 um 10:20:54 AM
 
-// Fecha en formato Arabico egipto
+// Date in Arabic Egypt format
 const arDate2 = new Intl.DateTimeFormat('ar-eg', options).format(date)
 // الخميس، ٨ سبتمبر ٢٢ في ١٠:٢٠:٥٤ ص
 ```
@@ -264,7 +263,7 @@ type Options = {
     maximumSignificantDigits?: number;
 }
 ```
-Using this extensive list of options, you can format a number to probably every possible use case.
+Using this extensive list of options, you can very likely format a number with every possible use case.
 
 Check this quick example.
 
@@ -310,7 +309,7 @@ Even though we kept the same locale, the values returned by the formatting funct
 
 > What would happen if you also changed the locale for each currency conversion?
 
-In case these options don't cover your use case, you can use another method that is provided by the formatter: `formatToParts`. This method will return an array of objects representing the number as a string in parts so you can use them to customize and solve your particular situation.
+In case these options don't cover your use-case, you can use another method that is provided by the formatter: `formatToParts`. This method will return an array of objects representing the number as a string in parts so you can use them to customize and solve your particular situation.
 
 ```js
 const formatToParts = new Intl.NumberFormat('en-US', {
@@ -332,7 +331,7 @@ const formatToParts = new Intl.NumberFormat('en-US', {
 
 What if you want to show a number like the social networks? Like `1.2K`?
 
-The `NumberFormat` can straightforwardly solve that.
+The `NumberFormat` can solve that.
 
 ```js
 // Compact format 
@@ -358,9 +357,9 @@ You can find a demo for the number formatting [in this playground.](https://jsit
 
 ### Relative Time
 
-Some times, you want to display the dates in a relative form, how so?, like this: `2 weeks ago`. You can do this by doing some math and string concatenation with the dates, but *Intl* helps you with this.
+Sometimes, you want to display the dates in a relative form such as: `2 weeks ago`. You can do this by doing some math and string concatenation with the dates, but *Intl* helps you with this.
 
-*Intl* expose a constructor named *RelativeTimeFormat* that, same as before accepts an argument to tell it what language you want to use and a set of options
+*Intl* expose a constructor named *RelativeTimeFormat* that, same as before, accepts an argument to tell it what language you want to use and a set of options
 
 ```ts
 type Options = {
@@ -378,7 +377,9 @@ const monthAgo = formatter.format(-1, 'month') // 1 month ago
 const futureMonth = formatter.format(1, 'month') // in 1 month
 ```
 
-When would you use something like this?. Imagine a list of articles, each article have a publication date, but you don't want to show just that, you want to show how much relative time is between the publication date and today (the day the user is reading the list). 
+When would you use something like this? 
+
+Imagine a list of articles, each article have a publication date, but you don't want to show just that, you want to show how much relative time is between the publication date and today (the day the user is reading the list). 
 
 To accomplish this you'll need to do a little math to get the difference between the two dates and use that result as a relative time value.
 
@@ -413,11 +414,11 @@ console.log(esRtf.format(-diffDays / 30, "month")); // hace 8.367 meses
 
 ### Pluralization
 
-The *Intl* object also support a way to define how to format plural-sensistive content, this is the *PluralRules* constructor.
+The *Intl* object also supports a way to define plural-sensistive content with the *PluralRules* constructor.
 
-One use case for this feature is to show the number of items of in existanse in your collection, ideally this should respect the grammatical numbering in each language you choose to use.
+One use case for this feature is to show the number of items that exist in your collection, ideally this should respect the grammatical numbering in each language you choose to use.
 
-You can always get around this requirement by writing your copy avoiding the need of pluralization, but what happen is you need it?.
+You can always get around this requirement by writing your copy avoiding the need of pluralization, but what happen is you need it?
 
 Let's check an example
 
@@ -453,8 +454,8 @@ const muchosItem = mostrarCantidadCajas(12) // 12 cajas
 
 ```
 <small>Check the demo [in the playground](https://jsitor.com/exTjrc0s_V)</small>
-> Note: in a real-woprld sceneario, you wouldn't hardcode the plurals 
-> like in this snippet; they'd be part of your translation files
+> Note: in a real-woprld sceneario, you wouldn't hardcode plurals 
+> in this snippet; they'd be part of your translation files
 
 Maybe this example is too naive, since English and Spanish have just two pluralization rules; however, not every language follow this rule, some have only a single plural form, while other have multiple forms. 
 
@@ -488,7 +489,7 @@ formatWelshCats(6);   // '6 chath'
 formatWelshCats(42);  // '42 cath'
 ```
 
-This constructor as the other ones exposed by *Intl* accepts a second argument to define options, one of that options is the `type` that allows you to define the selection rule. By default it use the `cardinal` way. If you want to get the `ordinal` indicator for a number (for example to create a list ) you can do it like the following snippet
+This constructor just like the others exposed by *Intl* accepts a second argument to define options. One option is the `type` that allows you to define the selection rule. By default it uses the `cardinal` option. If you want to get the `ordinal` indicator for a number (for example to create a list ) you can accomplish that as follows:
 
 ```js
 const pr = new Intl.PluralRules('en-US',{
@@ -513,7 +514,7 @@ formatOrdinals(100) // 100nd
 
 ### List Formatting
 
-Displaying list is one of the most used way to showcase information in a webapp. But since your users speaks different language you need a way to format the list based on that language convention. 
+Displaying a list is one of the most used ways to showcase information in a web app. But since your users speaks different language you need a way to format the list based on that language convention. 
 
 To avoid the hassle of implementing this formatting rules by hand - that could be really hard - *Intl* offers the *ListFormat* API.
 
@@ -574,9 +575,9 @@ console.table(Array.from(segments));
 
 ### String comparison
 
-The last constructor to review is the *Intl.Collator* one, this constructor enables string comparison with locale sensitivity.
+The last constructor to review is the *Intl.Collator*, this constructor enables string comparison with locale sensitivity.
 
-This constructor is very useful to sort strings that contains extra letters like German or Swedish. Different languages have different sorting rules, let's check a quick example of this
+This constructor is very useful to sort strings that contain extra letters like German or Swedish. Different languages have different sorting rules, let's check a quick example of this
 
 ```js
 const letters = ['ä', 'z']
@@ -594,7 +595,7 @@ console.log(letters.sort(listSV.compare));
 
 
 ## Conclusion
-Internationalization is an important piece of a application or website that is meant to be used by a worldwide audience, but get it right is a complex topic. Luckly there are many building blocks directly available from the Javascript engine that can help you implement a locale sensible UI.
+Internationalization is an important piece of an application or website that is meant to be used by a worldwide audience, but getting it right is a complex topic. Luckly there are many building blocks directly available from the Javascript engine that can help you implement a locale sensible UI.
 
 
 That’s a wrap!
