@@ -1,9 +1,5 @@
 ---
-article: https://betterprogramming.pub/typescript-a-gentle-introduction-to-mapped-types-f65e45fa2598
-article: https://blog.logrocket.com/typescript-mapped-types/
-article: https://blog.logrocket.com/how-to-use-keyof-operator-typescript/
 target-audience: Mid level TS developer who knows how to write basic typings for an application and want to go deeper into TS power to solve complex requirements
-
 description: After going on this article the reader will understand the key features of typescript that unlocks the required skills to write complex solutions for complex data shapes.
 This article runs over the base building blocks to be able to use concepts like condtional types and mapped types.
 
