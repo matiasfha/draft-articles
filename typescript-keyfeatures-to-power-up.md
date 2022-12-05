@@ -5,9 +5,10 @@ This article runs over the base building blocks to be able to use concepts like 
 
 ---
 
-
+<!--  Nit: always spell TypeScript with a capital "S" -->
 # Key features to power up with Typescript
 
+<!--  Insert a link to turing complete or remove it. I don't think it's needed here personally...unless we're going to do some powerful like build a database language with TS lol. -->
 Typescript is a powerful (turing complete) language, you can define and shape your data as you need to meet any requirement, but to do so, requires a deep kwnoledge of the tools the language offers.
 
 When you start writing more complex types you will notice that your code start to grow and that sometimes duplication of code appears, what do you do when you need to reuse code? How can you keep your code DRY? How do you reduce the boilerplate code?
@@ -16,6 +17,7 @@ There are a few main concepts around Typescript that helps you accomplish the pr
 
 But both concepts can be a bit scary at first, mostly because a knowledge gap that creates a wall and make the code un-readable at first.
 
+<!-- Split into multiple sentences. -->
 Generics are a way to create, in the type world a similar functionality that functions offers, Mapped Types are a way to derive and reshape types into new ones.
 
 But, before diving into this new concepts, you need to build up your knowledge with the key features that enable the power of Generics and Mapped Types.
@@ -23,9 +25,10 @@ But, before diving into this new concepts, you need to build up your knowledge w
 
 ## The keyof operator
 
-This operator or keyword is the Typescript's anwser to the javascript `Object.keys` operator.
+<!--  I like this comparison! -->
+This operator or keyword is the Typescript's anwser to the JavaScript `Object.keys` operator.
 
-`Object.keys` returns a list of the properties (the keys) of an object. `keyof` do something similar but in the typed world only. It will return a literal union type listing the "properties" of an object-like type.
+`Object.keys` returns a list of the properties (the keys) of an object. `keyof` do something similar but in the typed-world only. It will return a literal union type listing the "properties" of an object-like type.
 
 This operator is the base building block for advanced typing like mapped and conditional types.
 
@@ -60,6 +63,7 @@ The previous code sample is an snippet from a real webapp, the `Colors` type des
 
 The `keyof` operator is apply to the `Colors` type to retrieve a literal union of all the possible colors.
 
+<!--  i'm happy you explain this next 👏🏼 -->
 > Literal union means that is an Union type made up by literal values like "primary" | "primaryBorder"
 
 The union is then used to type the props of `SomeComponent` allowing the `color` argument to be one of the colors defined in the type.
@@ -85,7 +89,7 @@ Let's disect the generic portion of the above function definition
 
 - `Obj` is the name used to identify this Generic parameter. Usually people use single letters to identify the generic, but IMHO is clear to use a better name like variables. The intention here is to accept any object.
 
-- The second generic parameter is `Key extends keyof Obj`. Here teh `extends` keyword is used as a constraint, can be read as "Key is of ...." meaning that the `Key` generic can only be a value found in `keyof Obj`.
+- The second generic parameter is `Key extends keyof Obj`. Here the `extends` keyword is used as a constraint, can be read as "Key is of ...." meaning that the `Key` generic can only be a value found in `keyof Obj`.
 
 - `keyof Obj` is as mentioned before a union of string literals from the properties of `Obj` and `Obj` is the first generic paramter. So in Typescript you can reference the previous generic directly.
 
@@ -116,11 +120,12 @@ function objectKeys<Obj extends Record<string, unknown>>(obj: Obj): (keyof Obj)[
 }
 ```
 
-
+<!-- this sentence was super helpful! -->
 The above example can be read as `objectKeys` accepts a `obj` arguments that has to be of type `Record<string, unknown>` and will return an array of all of the properties of that obj.
 
 ### `keyof` and template literals.
 
+<!-- this example blew my mind!  -->
 You can also use `keyof` to construct complex template literals like the following example.
 
 ```ts
@@ -138,7 +143,7 @@ There you go, the `keyof` operator can be small but is an important piece in the
 
 ## The `extends` keyword
 
-This keyword is very confused at first time, this keyword is used in a few differnt places holding different meaning.
+This keyword is very confusing at first, this keyword is used in a few differnt places holding different meaning.
 
 The first usage of `extends` is around interface inheritance, this is allowing you to create new interfaces that inherit the behavior of a previous one, in other words, extending the base interface/class 
 
@@ -163,6 +168,7 @@ In this example, the first interface `User` just describe a type that have a few
 
 That's why the `StaffUser` is written with the `extends` keyword saying that this interface have all of the properties of the `User` interface, plus, the ones defined by itself.
 
+<!--  TIL -->
 This usage of `extends` can be used to inherit from multiple interfaces at same time by just using a comma separated names of the base interfaces.
 
 ```ts
