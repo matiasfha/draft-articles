@@ -9,6 +9,9 @@ Te dará un entendimiento sólido de los fundamentos del sistema de tipo y como 
 
 Comencemos con el primer desafío, mira este pequeño trozo de código:
 
+> Los desafíos y demos de este microcuso están disponibles en el playground de Typescript. Esta web es básicamente un editor de texto tal como VSCode y te puede mostrar los errors de tipo, además de mostrarte el resultado de la compilación de Typescript (código Javascript).
+> Revisa [este video para una revisión rápida del playground.](https://www.youtube.com/watch?v=Em_MltFTSTY)
+
 ```ts 
 type HelloWorld = any 
 
@@ -105,6 +108,41 @@ Haz [click aquí para realizar el desafío](https://www.typescriptlang.org/play?
 Typescript permmite agregar anotaciones de tipo a tu tradicional código Javascript para asegurarse en tiempo de desarollo (gracias a tu editor de código) o en tiempo de compilación que los datos utilizados son correctos.
 
 > Typescript no es ejecutado por el navegador, por lo que necesitas "compilarlo" o transformarlo a código Javascript. Es así como Typescript te entrega seguridad de tipos ya que cuenta con un compilador `tsc` que revisará tu código antes de llegar a tus usuarios.
+
+## Como instalar Typescript
+
+Si bien durante este microcuso usaremos principalmente el [playground de Typescript](https://www.typescriptlang.org/play), es importante que conozcas como puedes trabajar con Typescript en tu propia máquina.
+
+A modo general lo que requieres para trabajar con Typescript de forma local es instalar el paquete `typescript` en tu proyecto desde npm.
+
+Puedes crear un proyecto desde cero utilizando 
+
+```bash
+$ mkdir proyecto-ts 
+$ cd proyecto-ts
+$ npm init -y
+$ npm install typescript 
+
+```
+
+Con esos comandos lo que habrás logrados es, 
+- Crear un directorio llamado `proyecto-ts`
+- Inicializar un proyecto 
+- Instalar Typescript
+
+Ahora que Typescript está instalado, puedes abrir el archivo `package.json` presente dentro de `proyecto-ts` y agregar lo siguiente 
+
+```json 
+"scripts": {
+  "build": "tsc *.ts --out app.js",
+  "build:watch": "tsc *.ts --out app.js --watch"
+}
+```
+
+Esos scripts que agregaste a tu package.json ejecutarán el compilador de Typescript `tsc` sobre todos los archivos typescript presentes en tu proyecto creando un archivo Javascript llamado `app.js`
+
+Puedes probarlo copiando el código de los desafíos en un archivo llamado `app.ts` y luego en la consola ejecutar `npm run build`.
+
 
 
 Esto ha sido todo por hoy como introducción de este micro-curso, en la siguiente entrega revisaremos que son `type` e `interface`.
