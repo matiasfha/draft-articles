@@ -265,8 +265,31 @@ type ExtractQSParameters<QS extends string> = QS extends `${infer Var}&${infer R
 
 type RouteParameters = ExtractQSParameters<ExtractQS<typeof route>> // { query: "query"; user: "user"; test: "test"; }
 
+
+function getQSParams<S extends string>(r: RouteParameters<S> ) {
+  return r
+}
+
+getQSParams<typeof route>({
+    query: "123",
+    user: "2",
+    test: "some string",
+}) // OK
+
+getQSParams<typeof route>({
+    query: "123",
+    user: "2",
+}) // Fail: Property 'test' is missing in type '{ query: "123"; user: "2"; }' but required in type 
+
+getQSParams<typeof route>({
+    query: "12",
+    user: "2",
+    test: "some string",
+}) // Fail: Type '"12"' is not assignable to type '"123"'.
+
+
 ```
-<small>Visit [the playground to read more](https://tsplay.dev/w1Akkw) about the implementation</small>
+<small>Visit [the playground to read more](https://tsplay.dev/mp8Qpm) about the implementation</small>
 
 That looks complex right? But at this point we already reviewed all the concepts required to read and understand the snippet.
 
