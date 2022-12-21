@@ -1,29 +1,30 @@
 ---
-target-audience: Mid level TS developer who knows how to write basic typings for an application and want to go deeper into TS power to solve complex requirements
-description: After going on this article the reader will understand the key features of typescript that unlocks the required skills to write complex solutions for complex data shapes.
-This article runs over the base building blocks to be able to use concepts like condtional types and mapped types.
-
+title: "Learn the Key Concepts of Typescript's Powerful Generics and Mapped Types"
+canonical: https://egghead.io/blog/learn-the-key-concepts-of-typescript-s-powerful-generic-and-mapped-types
 ---
+As you write more complex types, you'll notice your code growing.
 
+You might also start seeing code duplication…
 
-# Key features to power up with Typescript
+When you need to reuse TypeScript code, what do you do? How can you keep your code DRY? How do you reduce the boilerplate code?
 
-Typescript is a powerful (turing complete) language, you can define and shape your data as you need to meet any requirement, but to do so, requires a deep kwnoledge of the tools the language offers.
+There are a few main concepts in Typescript that help you accomplish that goal of reducing boilerplate and reusing more code.
 
-When you start writing more complex types you will notice that your code start to grow and that sometimes duplication of code appears, what do you do when you need to reuse code? How can you keep your code DRY? How do you reduce the boilerplate code?
+We’ll be specifically be covering Generics and Mapped Types
 
-There are a few main concepts around Typescript that helps you accomplish the previous goal of reduce boilerplate and reuse more code, some of them are: Generics and Maped Types.
+Both concepts can be a bit scary at first, mostly because of a knowledge gap that creates a wall and makes the code un-readable at first.
 
-But both concepts can be a bit scary at first, mostly because a knowledge gap that creates a wall and make the code un-readable at first.
+Generics are a way to create, in the type world, a similar functionality that functions offer.
 
-Generics are a way to create, in the type world a similar functionality that functions offers, Mapped Types are a way to derive and reshape types into new ones.
+Mapped Types are a way to derive and reshape types into new ones.
 
-But, before diving into this new concepts, you need to build up your knowledge with the key features that enable the power of Generics and Mapped Types.
+But, before diving into these new concepts, you need to build up your knowledge with the key features that enable the power of Generics and Mapped Types.
+
 
 
 ## The keyof operator
 
-This operator or keyword is the Typescript's anwser to the javascript `Object.keys` operator.
+`keyof` is  Typescript's anwser to the JavaScript's `Object.keys` operator.
 
 `Object.keys` returns a list of the properties (the keys) of an object. `keyof` do something similar but in the typed world only. It will return a literal union type listing the "properties" of an object-like type.
 
@@ -233,7 +234,7 @@ A React component that can accept some props is a good example, in the above cod
 - `CardWithoutDescription`: This is the opposite type, where `description` cannot be used but `title` and `footer` are mandatory.
 - `CardProps` defines a union of the previous two to then be used to type the props of the  `Card` component.
 
-With this setup the `Card` component can only be used with `description` and no `footer` and no `title` or viceversa. If for some reason you try to use the three props together you'll get the following error:
+With this setup the `Card` component can only be used with `description` and no `footer` and no `title` or vice versa. If for some reason you try to use the three props together you'll get the following error:
 
 ```
 Type '{ description: string; title: string; footer: string; }' is not assignable to type 'IntrinsicAttributes & CardProps'.
@@ -246,7 +247,7 @@ Type '{ description: string; title: string; footer: string; }' is not assignable
 
 Generics are the typescript answer to be able to build well-defined and consistent APIs, that are also reusable. In any programming language you have ways to implement the DRY principle, typescript is not different.
 
-With Generics you can build dinamic and reusable pieces of code that somehow resemble a javascript function.
+With Generics you can build dynamic and reusable pieces of code that somehow resemble a JavaScript function.
 
 Maybe you already encounter the usage of Generics or maybe not, so let's see an example of generic in the wild.
 
@@ -293,14 +294,14 @@ const user: UserInfo<string, number> = {
 
 const user2: UserInfo<string, string> = {
   name: "User 2",
-  rol: "admin"
+  role: "admin"
 }
 ```
 
 In the example above, the interface `UserInfo` has two properties that depend on the generics used.
 
-· name: will be of type X
-· rol: will be of type Y
+- name: will be of type X
+- role: will be of type Y
 
 So when you do `UserInfo<string, string>`, you have that both properties will be strings.
 
@@ -308,4 +309,10 @@ Generics can be found in almost every typescript codebase since are the basic wa
 
 ## Conclusion
 
-With these four building blocks: `keyof`, `extends`, `never` and generics you can start creating more complex types like conditional types, mapped types, etc. 
+Mapped types and generics are powerful tools for any TypeScript developer.
+
+With a good understanding of the key features of typescript, such as the keyof operator, the extends keyword, the never keyword, and generics, you can unlock the full potential of TypeScript and write complex solutions for complex data shapes.
+
+With these features, you can create and reuse code, narrow down types, and create custom types, all while ensuring that your code remains DRY.
+
+For more curated TypeScript content, check out our [TypeScript landing page!](https://egghead.io/q/typescript)
