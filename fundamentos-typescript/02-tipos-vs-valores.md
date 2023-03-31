@@ -109,7 +109,7 @@ type Arr = Array<string> // Un arreglo infinito de sólo strings, también puede
 
 Estos dos tipos ofrecidos por Typescript son similares y opuestos. Ambos conceptos provienen de la teoría de conjuntos y sólo existen en el nivel de tipos. Son importantes ya que permiten expresar diferentes patrones y modelos.
 
-Por ahora sólo revisaremos su sintaxis y brevemente su significado, pero ahondaremos más en la siguiente entrega.
+Por ahora sólo revisaremos su sintaxis y brevemente su significado, pero ahondaremos más en una siguiente entrega.
 
 ```ts 
 

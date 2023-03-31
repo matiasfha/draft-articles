@@ -29,8 +29,8 @@ Los tópicos que revisaremos serán:
 
 - ¿Por qué usar Typescript?
 - El lenguaje de tipos: Tipos vs Valores
+- unknown y never
 - ¿Qué son types e interfaces?
-- Tipos y valores.
 - Objetos y Registros.
 - Arreglos y Tuplas.
 - `keyof`.
