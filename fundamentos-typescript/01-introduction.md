@@ -32,6 +32,7 @@ Los tópicos que revisaremos serán:
 - unknown y never
 - ¿Qué son types e interfaces?
 - Objetos y Registros.
+- Tipos Utilitarios
 - Arreglos y Tuplas.
 - `keyof`.
 - `extends` restricciones y herencia.
